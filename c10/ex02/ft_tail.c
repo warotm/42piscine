@@ -29,29 +29,25 @@ struct s_data
 
 void	ft_push_str(struct s_data *output, struct s_data *buffer)
 {
-	char	*output_ptr;
-	char	*buffer_ptr;
 	int		i;
-	int		j;
+	int		shift;
 
-	output_ptr = output->str;
-	if (buffer->size < output->max_size)
+	shift = output->size - buffer->size;
+	if (shift < 0)
+		shift = 0;
+	i = 0;
+	while (i < shift)
 	{
-		i = 0;
-		while (i < output->max_size - buffer->size)
-		{
-			output_ptr[i] = output_ptr[i + buffer->size];
-			i++;
-		}
+		output->str[i] = output->str[i + buffer->size];
+		i++;
 	}
-	buffer_ptr = buffer->str;
-	j = 0;
-	while (j < buffer->size)
+	i = 0;
+	while (i < buffer->size)
 	{
-		output_ptr[j + output->max_size - buffer->size] = buffer_ptr[j];
-		j++;
+		output->str[i + shift] = buffer->str[i];
+		i++;
 	}
-	output->size = i + j;
+	output->size = i + shift;
 }
 
 struct s_data	*ft_create_empty_data(int n)
